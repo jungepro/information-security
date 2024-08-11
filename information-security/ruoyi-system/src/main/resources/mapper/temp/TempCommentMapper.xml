@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.temp.mapper.TempCommentMapper">
+    
+    <resultMap type="TempComment" id="TempCommentResult">
+        <result property="commentId"    column="comment_id"    />
+        <result property="newsId"    column="news_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="title"    column="title"    />
+        <result property="comment"    column="comment"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="text1"    column="text1"    />
+        <result property="text2"    column="text2"    />
+        <result property="text3"    column="text3"    />
+    </resultMap>
+
+    <sql id="selectTempCommentVo">
+        select comment_id, news_id, user_id, title, comment, create_time, text1, text2, text3 from temp_comment
+    </sql>
+
+    <select id="selectTempCommentList" parameterType="TempComment" resultMap="TempCommentResult">
+        <include refid="selectTempCommentVo"/>
+        <where>  
+            <if test="commentId != null "> and comment_id = #{commentId}</if>
+            <if test="newsId != null "> and news_id = #{newsId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="text1 != null  and text1 != ''"> and text1 = #{text1}</if>
+            <if test="text2 != null  and text2 != ''"> and text2 = #{text2}</if>
+            <if test="text3 != null  and text3 != ''"> and text3 = #{text3}</if>
+        </where>
+    </select>
+    
+    <select id="selectTempCommentById" parameterType="Long" resultMap="TempCommentResult">
+        <include refid="selectTempCommentVo"/>
+        where comment_id = #{commentId}
+    </select>
+        
+    <insert id="insertTempComment" parameterType="TempComment" useGeneratedKeys="true" keyProperty="commentId">
+        insert into temp_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="newsId != null">news_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="comment != null and comment != ''">comment,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="text1 != null">text1,</if>
+            <if test="text2 != null">text2,</if>
+            <if test="text3 != null">text3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="newsId != null">#{newsId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="comment != null and comment != ''">#{comment},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="text1 != null">#{text1},</if>
+            <if test="text2 != null">#{text2},</if>
+            <if test="text3 != null">#{text3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTempComment" parameterType="TempComment">
+        update temp_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="newsId != null">news_id = #{newsId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="comment != null and comment != ''">comment = #{comment},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="text1 != null">text1 = #{text1},</if>
+            <if test="text2 != null">text2 = #{text2},</if>
+            <if test="text3 != null">text3 = #{text3},</if>
+        </trim>
+        where comment_id = #{commentId}
+    </update>
+
+    <delete id="deleteTempCommentById" parameterType="Long">
+        delete from temp_comment where comment_id = #{commentId}
+    </delete>
+
+    <delete id="deleteTempCommentByIds" parameterType="String">
+        delete from temp_comment where comment_id in 
+        <foreach item="commentId" collection="array" open="(" separator="," close=")">
+            #{commentId}
+        </foreach>
+    </delete>
+</mapper>

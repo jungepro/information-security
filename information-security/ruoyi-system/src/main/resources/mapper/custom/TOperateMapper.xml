@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.custom.mapper.TOperateMapper">
+    
+    <resultMap type="TOperate" id="TOperateResult">
+        <result property="operateId"    column="operate_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="operateName"    column="operate_name"    />
+        <result property="operateDate"    column="operate_date"    />
+        <result property="detail"    column="detail"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="text1"    column="text1"    />
+        <result property="text2"    column="text2"    />
+        <result property="text3"    column="text3"    />
+    </resultMap>
+
+    <sql id="selectTOperateVo">
+        select operate_id, user_id, operate_name, operate_date, detail, remark, create_time, update_time, text1, text2, text3 from t_operate
+    </sql>
+
+    <select id="selectTOperateList" parameterType="TOperate" resultMap="TOperateResult">
+        <include refid="selectTOperateVo"/>
+        <where>  
+            <if test="operateId != null "> and operate_id = #{operateId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="operateName != null  and operateName != ''"> and operate_name like concat('%', #{operateName}, '%')</if>
+            <if test="operateDate != null "> and operate_date = #{operateDate}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="text1 != null  and text1 != ''"> and text1 = #{text1}</if>
+            <if test="text2 != null  and text2 != ''"> and text2 = #{text2}</if>
+            <if test="text3 != null  and text3 != ''"> and text3 = #{text3}</if>
+        </where>
+    </select>
+    
+    <select id="selectTOperateById" parameterType="Long" resultMap="TOperateResult">
+        <include refid="selectTOperateVo"/>
+        where operate_id = #{operateId}
+    </select>
+        
+    <insert id="insertTOperate" parameterType="TOperate" useGeneratedKeys="true" keyProperty="operateId">
+        insert into t_operate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="operateName != null">operate_name,</if>
+            <if test="operateDate != null">operate_date,</if>
+            <if test="detail != null">detail,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="text1 != null">text1,</if>
+            <if test="text2 != null">text2,</if>
+            <if test="text3 != null">text3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="operateName != null">#{operateName},</if>
+            <if test="operateDate != null">#{operateDate},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="text1 != null">#{text1},</if>
+            <if test="text2 != null">#{text2},</if>
+            <if test="text3 != null">#{text3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTOperate" parameterType="TOperate">
+        update t_operate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="operateName != null">operate_name = #{operateName},</if>
+            <if test="operateDate != null">operate_date = #{operateDate},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="text1 != null">text1 = #{text1},</if>
+            <if test="text2 != null">text2 = #{text2},</if>
+            <if test="text3 != null">text3 = #{text3},</if>
+        </trim>
+        where operate_id = #{operateId}
+    </update>
+
+    <delete id="deleteTOperateById" parameterType="Long">
+        delete from t_operate where operate_id = #{operateId}
+    </delete>
+
+    <delete id="deleteTOperateByIds" parameterType="String">
+        delete from t_operate where operate_id in 
+        <foreach item="operateId" collection="array" open="(" separator="," close=")">
+            #{operateId}
+        </foreach>
+    </delete>
+
+    <select id="customTOperateSql" parameterType="TOperate" resultType="java.util.Map">
+        select * from t_operate
+        where operate_id = #{operateId}
+    </select>
+
+</mapper>

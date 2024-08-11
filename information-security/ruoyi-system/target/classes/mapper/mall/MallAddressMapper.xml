@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mall.mapper.MallAddressMapper">
+    
+    <resultMap type="MallAddress" id="MallAddressResult">
+        <result property="addressId"    column="address_id"    />
+        <result property="address"    column="address"    />
+        <result property="defaultAddress"    column="default_address"    />
+        <result property="userId"    column="user_id"    />
+        <result property="phone"    column="phone"    />
+        <result property="consignee"    column="consignee"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMallAddressVo">
+        select address_id, address, default_address, user_id, phone, consignee, create_time, update_time from mall_address
+    </sql>
+
+    <select id="selectMallAddressList" parameterType="MallAddress" resultMap="MallAddressResult">
+        <include refid="selectMallAddressVo"/>
+        <where>  
+            <if test="addressId != null "> and address_id = #{addressId}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="defaultAddress != null  and defaultAddress != ''"> and default_address = #{defaultAddress}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallAddressById" parameterType="Long" resultMap="MallAddressResult">
+        <include refid="selectMallAddressVo"/>
+        where address_id = #{addressId}
+    </select>
+        
+    <insert id="insertMallAddress" parameterType="MallAddress" useGeneratedKeys="true" keyProperty="addressId">
+        insert into mall_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="address != null and address != ''">address,</if>
+            <if test="defaultAddress != null and defaultAddress != ''">default_address,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="phone != null">phone,</if>
+            <if test="consignee != null">consignee,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="defaultAddress != null and defaultAddress != ''">#{defaultAddress},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="consignee != null">#{consignee},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallAddress" parameterType="MallAddress">
+        update mall_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="defaultAddress != null and defaultAddress != ''">default_address = #{defaultAddress},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="consignee != null">consignee = #{consignee},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where address_id = #{addressId}
+    </update>
+
+    <delete id="deleteMallAddressById" parameterType="Long">
+        delete from mall_address where address_id = #{addressId}
+    </delete>
+
+    <delete id="deleteMallAddressByIds" parameterType="String">
+        delete from mall_address where address_id in 
+        <foreach item="addressId" collection="array" open="(" separator="," close=")">
+            #{addressId}
+        </foreach>
+    </delete>
+
+    <select id="customMallAddressSql" parameterType="MallAddress" resultType="java.util.Map">
+        select * from mall_address
+        where address_id = #{addressId}
+    </select>
+
+</mapper>

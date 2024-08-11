@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.custom.mapper.TShenqinMapper">
+    <resultMap type="TShenqin" id="TShenqinResult">
+        <result property="id" column="id"/>
+        <result property="info" column="info"/>
+        <result property="url" column="url"/>
+        <result property="lvl" column="lvl"/>
+        <result property="advice" column="advice"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectTShenqinVo">
+        select id,
+               info,
+               url,
+               lvl,
+               advice,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from t_shenqin
+    </sql>
+
+    <select id="selectTShenqinList" parameterType="TShenqin" resultMap="TShenqinResult">
+        <include refid="selectTShenqinVo"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="info != null  and info != ''">
+                and info like concat('%', #{info}, '%')
+            </if>
+            <if test="url != null  and url != ''">
+                and url = #{url}
+            </if>
+            <if test="lvl != null  and lvl != ''">
+                and lvl = #{lvl}
+            </if>
+            <if test="advice != null  and advice != ''">
+                and advice = #{advice}
+            </if>
+            <if test="createBy != null  and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateBy != null  and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTShenqinById" parameterType="Long" resultMap="TShenqinResult">
+        <include refid="selectTShenqinVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTShenqin" parameterType="TShenqin">
+        insert into t_shenqin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="info != null">
+                info,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="lvl != null">
+                lvl,
+            </if>
+            <if test="advice != null">
+                advice,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="info != null">
+                #{info},
+            </if>
+            <if test="url != null">
+                #{url},
+            </if>
+            <if test="lvl != null">
+                #{lvl},
+            </if>
+            <if test="advice != null">
+                #{advice},
+            </if>
+            <if test="createBy != null">
+                #{createBy},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateTShenqin" parameterType="TShenqin">
+        update t_shenqin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="info != null">
+                info = #{info},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="lvl != null">
+                lvl = #{lvl},
+            </if>
+            <if test="advice != null">
+                advice = #{advice},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTShenqinById" parameterType="Long">
+        delete
+        from t_shenqin
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTShenqinByIds" parameterType="String">
+        delete
+        from t_shenqin where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="customTShenqinSql" parameterType="TShenqin" resultType="java.util.Map">
+        select *
+        from t_shenqin
+        where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.custom.mapper.TDingjiMapper">
+    
+    <resultMap type="TDingji" id="TDingjiResult">
+        <result property="id"    column="id"    />
+        <result property="level"    column="level"    />
+        <result property="info"    column="info"    />
+        <result property="fujian"    column="fujian"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTDingjiVo">
+        select id, level, info, fujian, create_by, create_time, update_by, update_time from t_dingji
+    </sql>
+
+    <select id="selectTDingjiList" parameterType="TDingji" resultMap="TDingjiResult">
+        <include refid="selectTDingjiVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="info != null  and info != ''"> and info = #{info}</if>
+            <if test="fujian != null  and fujian != ''"> and fujian = #{fujian}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTDingjiById" parameterType="Long" resultMap="TDingjiResult">
+        <include refid="selectTDingjiVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTDingji" parameterType="TDingji" useGeneratedKeys="true" keyProperty="id">
+        insert into t_dingji
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="level != null">level,</if>
+            <if test="info != null">info,</if>
+            <if test="fujian != null">fujian,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="level != null">#{level},</if>
+            <if test="info != null">#{info},</if>
+            <if test="fujian != null">#{fujian},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDingji" parameterType="TDingji">
+        update t_dingji
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="level != null">level = #{level},</if>
+            <if test="info != null">info = #{info},</if>
+            <if test="fujian != null">fujian = #{fujian},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDingjiById" parameterType="Long">
+        delete from t_dingji where id = #{id}
+    </delete>
+
+    <delete id="deleteTDingjiByIds" parameterType="String">
+        delete from t_dingji where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="customTDingjiSql" parameterType="TDingji" resultType="java.util.Map">
+        select * from t_dingji
+        where id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.temp.mapper.TempNewsMapper">
+    
+    <resultMap type="TempNews" id="TempNewsResult">
+        <result property="newsId"    column="news_id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="publishDate"    column="publish_date"    />
+        <result property="image"    column="image"    />
+        <result property="remark"    column="remark"    />
+        <result property="text1"    column="text1"    />
+        <result property="text2"    column="text2"    />
+        <result property="text3"    column="text3"    />
+    </resultMap>
+
+    <sql id="selectTempNewsVo">
+        select news_id, category_id, title, content, publish_date, image, remark, text1, text2, text3 from temp_news
+    </sql>
+
+    <select id="selectTempNewsList" parameterType="TempNews" resultMap="TempNewsResult">
+        <include refid="selectTempNewsVo"/>
+        <where>  
+            <if test="newsId != null "> and news_id = #{newsId}</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="publishDate != null "> and publish_date = #{publishDate}</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="text1 != null  and text1 != ''"> and text1 = #{text1}</if>
+            <if test="text2 != null  and text2 != ''"> and text2 = #{text2}</if>
+            <if test="text3 != null  and text3 != ''"> and text3 = #{text3}</if>
+        </where>
+    </select>
+    
+    <select id="selectTempNewsById" parameterType="Long" resultMap="TempNewsResult">
+        <include refid="selectTempNewsVo"/>
+        where news_id = #{newsId}
+    </select>
+        
+    <insert id="insertTempNews" parameterType="TempNews" useGeneratedKeys="true" keyProperty="newsId">
+        insert into temp_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">category_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="publishDate != null">publish_date,</if>
+            <if test="image != null">image,</if>
+            <if test="remark != null">remark,</if>
+            <if test="text1 != null">text1,</if>
+            <if test="text2 != null">text2,</if>
+            <if test="text3 != null">text3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="publishDate != null">#{publishDate},</if>
+            <if test="image != null">#{image},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="text1 != null">#{text1},</if>
+            <if test="text2 != null">#{text2},</if>
+            <if test="text3 != null">#{text3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTempNews" parameterType="TempNews">
+        update temp_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="publishDate != null">publish_date = #{publishDate},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="text1 != null">text1 = #{text1},</if>
+            <if test="text2 != null">text2 = #{text2},</if>
+            <if test="text3 != null">text3 = #{text3},</if>
+        </trim>
+        where news_id = #{newsId}
+    </update>
+
+    <delete id="deleteTempNewsById" parameterType="Long">
+        delete from temp_news where news_id = #{newsId}
+    </delete>
+
+    <delete id="deleteTempNewsByIds" parameterType="String">
+        delete from temp_news where news_id in 
+        <foreach item="newsId" collection="array" open="(" separator="," close=")">
+            #{newsId}
+        </foreach>
+    </delete>
+</mapper>

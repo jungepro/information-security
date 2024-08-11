@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.temp.mapper.VtempCommentMapper">
+    
+    <resultMap type="VtempComment" id="VtempCommentResult">
+        <result property="commentId"    column="comment_id"    />
+        <result property="newsId"    column="news_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="title"    column="title"    />
+        <result property="comment"    column="comment"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="text1"    column="text1"    />
+        <result property="text2"    column="text2"    />
+        <result property="text3"    column="text3"    />
+        <result property="newsTitle"    column="news_title"    />
+        <result property="userAvatar"    column="user_avatar"    />
+        <result property="nickName"    column="nick_name"    />
+    </resultMap>
+
+    <sql id="selectVtempCommentVo">
+        select comment_id, news_id, user_id, title, comment, create_time, text1, text2, text3, news_title, user_avatar, nick_name from vtemp_comment
+    </sql>
+
+    <select id="selectVtempCommentList" parameterType="VtempComment" resultMap="VtempCommentResult">
+        <include refid="selectVtempCommentVo"/>
+        <where>  
+            <if test="commentId != null "> and comment_id = #{commentId}</if>
+            <if test="newsId != null "> and news_id = #{newsId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="text1 != null  and text1 != ''"> and text1 = #{text1}</if>
+            <if test="text2 != null  and text2 != ''"> and text2 = #{text2}</if>
+            <if test="text3 != null  and text3 != ''"> and text3 = #{text3}</if>
+            <if test="newsTitle != null  and newsTitle != ''"> and news_title like concat('%', #{newsTitle}, '%')</if>
+            <if test="userAvatar != null  and userAvatar != ''"> and user_avatar = #{userAvatar}</if>
+            <if test="nickName != null  and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectVtempCommentById" parameterType="Long" resultMap="VtempCommentResult">
+        <include refid="selectVtempCommentVo"/>
+        where comment_id = #{commentId}
+    </select>
+        
+    <insert id="insertVtempComment" parameterType="VtempComment">
+        insert into vtemp_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">comment_id,</if>
+            <if test="newsId != null">news_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="comment != null and comment != ''">comment,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="text1 != null">text1,</if>
+            <if test="text2 != null">text2,</if>
+            <if test="text3 != null">text3,</if>
+            <if test="newsTitle != null">news_title,</if>
+            <if test="userAvatar != null">user_avatar,</if>
+            <if test="nickName != null">nick_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">#{commentId},</if>
+            <if test="newsId != null">#{newsId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="comment != null and comment != ''">#{comment},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="text1 != null">#{text1},</if>
+            <if test="text2 != null">#{text2},</if>
+            <if test="text3 != null">#{text3},</if>
+            <if test="newsTitle != null">#{newsTitle},</if>
+            <if test="userAvatar != null">#{userAvatar},</if>
+            <if test="nickName != null">#{nickName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVtempComment" parameterType="VtempComment">
+        update vtemp_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="newsId != null">news_id = #{newsId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="comment != null and comment != ''">comment = #{comment},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="text1 != null">text1 = #{text1},</if>
+            <if test="text2 != null">text2 = #{text2},</if>
+            <if test="text3 != null">text3 = #{text3},</if>
+            <if test="newsTitle != null">news_title = #{newsTitle},</if>
+            <if test="userAvatar != null">user_avatar = #{userAvatar},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
+        </trim>
+        where comment_id = #{commentId}
+    </update>
+
+    <delete id="deleteVtempCommentById" parameterType="Long">
+        delete from vtemp_comment where comment_id = #{commentId}
+    </delete>
+
+    <delete id="deleteVtempCommentByIds" parameterType="String">
+        delete from vtemp_comment where comment_id in 
+        <foreach item="commentId" collection="array" open="(" separator="," close=")">
+            #{commentId}
+        </foreach>
+    </delete>
+</mapper>

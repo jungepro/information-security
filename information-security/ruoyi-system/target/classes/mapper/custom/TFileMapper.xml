@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.custom.mapper.TFileMapper">
+    
+    <resultMap type="TFile" id="TFileResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="file"    column="file"    />
+        <result property="detail"    column="detail"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="text1"    column="text1"    />
+        <result property="text2"    column="text2"    />
+        <result property="text3"    column="text3"    />
+    </resultMap>
+
+    <sql id="selectTFileVo">
+        select file_id, file_name, file, detail, create_time, update_time, text1, text2, text3 from t_file
+    </sql>
+
+    <select id="selectTFileList" parameterType="TFile" resultMap="TFileResult">
+        <include refid="selectTFileVo"/>
+        <where>  
+            <if test="fileId != null "> and file_id = #{fileId}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="file != null  and file != ''"> and file = #{file}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="text1 != null  and text1 != ''"> and text1 = #{text1}</if>
+            <if test="text2 != null  and text2 != ''"> and text2 = #{text2}</if>
+            <if test="text3 != null  and text3 != ''"> and text3 = #{text3}</if>
+        </where>
+    </select>
+    
+    <select id="selectTFileById" parameterType="Long" resultMap="TFileResult">
+        <include refid="selectTFileVo"/>
+        where file_id = #{fileId}
+    </select>
+        
+    <insert id="insertTFile" parameterType="TFile" useGeneratedKeys="true" keyProperty="fileId">
+        insert into t_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fileName != null">file_name,</if>
+            <if test="file != null">file,</if>
+            <if test="detail != null">detail,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="text1 != null">text1,</if>
+            <if test="text2 != null">text2,</if>
+            <if test="text3 != null">text3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fileName != null">#{fileName},</if>
+            <if test="file != null">#{file},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="text1 != null">#{text1},</if>
+            <if test="text2 != null">#{text2},</if>
+            <if test="text3 != null">#{text3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTFile" parameterType="TFile">
+        update t_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="file != null">file = #{file},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="text1 != null">text1 = #{text1},</if>
+            <if test="text2 != null">text2 = #{text2},</if>
+            <if test="text3 != null">text3 = #{text3},</if>
+        </trim>
+        where file_id = #{fileId}
+    </update>
+
+    <delete id="deleteTFileById" parameterType="Long">
+        delete from t_file where file_id = #{fileId}
+    </delete>
+
+    <delete id="deleteTFileByIds" parameterType="String">
+        delete from t_file where file_id in 
+        <foreach item="fileId" collection="array" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </delete>
+
+    <select id="customTFileSql" parameterType="TFile" resultType="java.util.Map">
+        select * from t_file
+        where file_id = #{fileId}
+    </select>
+
+</mapper>

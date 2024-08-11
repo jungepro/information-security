@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mall.mapper.MallOrderspuMapper">
+    
+    <resultMap type="MallOrderspu" id="MallOrderspuResult">
+        <result property="orderspuId"    column="orderspu_id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="spuId"    column="spu_id"    />
+        <result property="title"    column="title"    />
+        <result property="img"    column="img"    />
+        <result property="price"    column="price"    />
+        <result property="num"    column="num"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMallOrderspuVo">
+        select orderspu_id, order_id, spu_id, title, img, price, num, create_time from mall_orderspu
+    </sql>
+
+    <select id="selectMallOrderspuList" parameterType="MallOrderspu" resultMap="MallOrderspuResult">
+        <include refid="selectMallOrderspuVo"/>
+        <where>  
+            <if test="orderspuId != null "> and orderspu_id = #{orderspuId}</if>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="spuId != null "> and spu_id = #{spuId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallOrderspuById" parameterType="Long" resultMap="MallOrderspuResult">
+        <include refid="selectMallOrderspuVo"/>
+        where orderspu_id = #{orderspuId}
+    </select>
+        
+    <insert id="insertMallOrderspu" parameterType="MallOrderspu" useGeneratedKeys="true" keyProperty="orderspuId">
+        insert into mall_orderspu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="spuId != null">spu_id,</if>
+            <if test="title != null">title,</if>
+            <if test="img != null">img,</if>
+            <if test="price != null">price,</if>
+            <if test="num != null">num,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="spuId != null">#{spuId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="img != null">#{img},</if>
+            <if test="price != null">#{price},</if>
+            <if test="num != null">#{num},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallOrderspu" parameterType="MallOrderspu">
+        update mall_orderspu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="spuId != null">spu_id = #{spuId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where orderspu_id = #{orderspuId}
+    </update>
+
+    <delete id="deleteMallOrderspuById" parameterType="Long">
+        delete from mall_orderspu where orderspu_id = #{orderspuId}
+    </delete>
+
+    <delete id="deleteMallOrderspuByIds" parameterType="String">
+        delete from mall_orderspu where orderspu_id in 
+        <foreach item="orderspuId" collection="array" open="(" separator="," close=")">
+            #{orderspuId}
+        </foreach>
+    </delete>
+
+    <select id="customMallOrderspuSql" parameterType="MallOrderspu" resultType="java.util.Map">
+        select * from mall_orderspu
+        where orderspu_id = #{orderspuId}
+    </select>
+
+</mapper>

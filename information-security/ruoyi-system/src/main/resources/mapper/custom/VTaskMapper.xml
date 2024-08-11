@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.custom.mapper.VTaskMapper">
+    
+    <resultMap type="VTask" id="VTaskResult">
+        <result property="taskId"    column="task_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="taskDate"    column="task_date"    />
+        <result property="detail"    column="detail"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="text1"    column="text1"    />
+        <result property="text2"    column="text2"    />
+        <result property="text3"    column="text3"    />
+        <result property="nickName"    column="nick_name"    />
+    </resultMap>
+
+    <sql id="selectVTaskVo">
+        select task_id, user_id, task_name, task_date, detail, status, create_time, update_time, text1, text2, text3, nick_name from v_task
+    </sql>
+
+    <select id="selectVTaskList" parameterType="VTask" resultMap="VTaskResult">
+        <include refid="selectVTaskVo"/>
+        <where>  
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="taskName != null  and taskName != ''"> and task_name like concat('%', #{taskName}, '%')</if>
+            <if test="taskDate != null "> and task_date = #{taskDate}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="text1 != null  and text1 != ''"> and text1 = #{text1}</if>
+            <if test="text2 != null  and text2 != ''"> and text2 = #{text2}</if>
+            <if test="text3 != null  and text3 != ''"> and text3 = #{text3}</if>
+            <if test="nickName != null  and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectVTaskById" parameterType="Long" resultMap="VTaskResult">
+        <include refid="selectVTaskVo"/>
+        where task_id = #{taskId}
+    </select>
+        
+    <insert id="insertVTask" parameterType="VTask">
+        insert into v_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="taskName != null">task_name,</if>
+            <if test="taskDate != null">task_date,</if>
+            <if test="detail != null">detail,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="text1 != null">text1,</if>
+            <if test="text2 != null">text2,</if>
+            <if test="text3 != null">text3,</if>
+            <if test="nickName != null">nick_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="taskName != null">#{taskName},</if>
+            <if test="taskDate != null">#{taskDate},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="text1 != null">#{text1},</if>
+            <if test="text2 != null">#{text2},</if>
+            <if test="text3 != null">#{text3},</if>
+            <if test="nickName != null">#{nickName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVTask" parameterType="VTask">
+        update v_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="taskName != null">task_name = #{taskName},</if>
+            <if test="taskDate != null">task_date = #{taskDate},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="text1 != null">text1 = #{text1},</if>
+            <if test="text2 != null">text2 = #{text2},</if>
+            <if test="text3 != null">text3 = #{text3},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <delete id="deleteVTaskById" parameterType="Long">
+        delete from v_task where task_id = #{taskId}
+    </delete>
+
+    <delete id="deleteVTaskByIds" parameterType="String">
+        delete from v_task where task_id in 
+        <foreach item="taskId" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </delete>
+
+    <select id="customVTaskSql" parameterType="VTask" resultType="java.util.Map">
+        select * from v_task
+        where task_id = #{taskId}
+    </select>
+
+</mapper>

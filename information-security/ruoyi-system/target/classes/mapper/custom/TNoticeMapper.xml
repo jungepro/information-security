@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.custom.mapper.TNoticeMapper">
+    
+    <resultMap type="TNotice" id="TNoticeResult">
+        <result property="noticeId"    column="notice_id"    />
+        <result property="noticeName"    column="notice_name"    />
+        <result property="image"    column="image"    />
+        <result property="detail"    column="detail"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="text1"    column="text1"    />
+        <result property="text2"    column="text2"    />
+        <result property="text3"    column="text3"    />
+    </resultMap>
+
+    <sql id="selectTNoticeVo">
+        select notice_id, notice_name, image, detail, create_time, update_time, text1, text2, text3 from t_notice
+    </sql>
+
+    <select id="selectTNoticeList" parameterType="TNotice" resultMap="TNoticeResult">
+        <include refid="selectTNoticeVo"/>
+        <where>  
+            <if test="noticeId != null "> and notice_id = #{noticeId}</if>
+            <if test="noticeName != null  and noticeName != ''"> and notice_name like concat('%', #{noticeName}, '%')</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="text1 != null  and text1 != ''"> and text1 = #{text1}</if>
+            <if test="text2 != null  and text2 != ''"> and text2 = #{text2}</if>
+            <if test="text3 != null  and text3 != ''"> and text3 = #{text3}</if>
+        </where>
+    </select>
+    
+    <select id="selectTNoticeById" parameterType="Long" resultMap="TNoticeResult">
+        <include refid="selectTNoticeVo"/>
+        where notice_id = #{noticeId}
+    </select>
+        
+    <insert id="insertTNotice" parameterType="TNotice" useGeneratedKeys="true" keyProperty="noticeId">
+        insert into t_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="noticeName != null">notice_name,</if>
+            <if test="image != null">image,</if>
+            <if test="detail != null">detail,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="text1 != null">text1,</if>
+            <if test="text2 != null">text2,</if>
+            <if test="text3 != null">text3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="noticeName != null">#{noticeName},</if>
+            <if test="image != null">#{image},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="text1 != null">#{text1},</if>
+            <if test="text2 != null">#{text2},</if>
+            <if test="text3 != null">#{text3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTNotice" parameterType="TNotice">
+        update t_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="noticeName != null">notice_name = #{noticeName},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="text1 != null">text1 = #{text1},</if>
+            <if test="text2 != null">text2 = #{text2},</if>
+            <if test="text3 != null">text3 = #{text3},</if>
+        </trim>
+        where notice_id = #{noticeId}
+    </update>
+
+    <delete id="deleteTNoticeById" parameterType="Long">
+        delete from t_notice where notice_id = #{noticeId}
+    </delete>
+
+    <delete id="deleteTNoticeByIds" parameterType="String">
+        delete from t_notice where notice_id in 
+        <foreach item="noticeId" collection="array" open="(" separator="," close=")">
+            #{noticeId}
+        </foreach>
+    </delete>
+
+    <select id="customTNoticeSql" parameterType="TNotice" resultType="java.util.Map">
+        select * from t_notice
+        where notice_id = #{noticeId}
+    </select>
+
+</mapper>

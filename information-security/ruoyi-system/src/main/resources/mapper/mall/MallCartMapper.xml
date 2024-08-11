@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mall.mapper.MallCartMapper">
+    
+    <resultMap type="MallCart" id="MallCartResult">
+        <result property="cartId"    column="cart_id"    />
+        <result property="spuId"    column="spu_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="num"    column="num"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMallCartVo">
+        select cart_id, spu_id, user_id, num, create_time from mall_cart
+    </sql>
+
+    <select id="selectMallCartList" parameterType="MallCart" resultMap="MallCartResult">
+        select t1.*, t2.img, t2.title, t2.price from mall_cart t1
+        left join mall_spu t2 on t1.spu_id = t2.spu_id
+        <where>
+            <if test="cartId != null "> and cart_id = #{cartId}</if>
+            <if test="spuId != null "> and t1.spu_id = #{spuId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallCartById" parameterType="Long" resultMap="MallCartResult">
+        <include refid="selectMallCartVo"/>
+        where cart_id = #{cartId}
+    </select>
+        
+    <insert id="insertMallCart" parameterType="MallCart" useGeneratedKeys="true" keyProperty="cartId">
+        insert into mall_cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="spuId != null">spu_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="num != null">num,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="spuId != null">#{spuId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="num != null">#{num},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallCart" parameterType="MallCart">
+        update mall_cart
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="spuId != null">spu_id = #{spuId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where cart_id = #{cartId}
+    </update>
+
+    <delete id="deleteMallCartById" parameterType="Long">
+        delete from mall_cart where cart_id = #{cartId}
+    </delete>
+
+    <delete id="deleteMallCartByIds" parameterType="String">
+        delete from mall_cart where cart_id in 
+        <foreach item="cartId" collection="array" open="(" separator="," close=")">
+            #{cartId}
+        </foreach>
+    </delete>
+
+    <select id="customMallCartSql" parameterType="MallCart" resultType="java.util.Map">
+        select * from mall_cart
+        where cart_id = #{cartId}
+    </select>
+
+</mapper>

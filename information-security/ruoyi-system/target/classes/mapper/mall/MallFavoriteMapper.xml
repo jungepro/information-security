@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mall.mapper.MallFavoriteMapper">
+    
+    <resultMap type="MallFavorite" id="MallFavoriteResult">
+        <result property="favoriteId"    column="favorite_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="spuId"    column="spu_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMallFavoriteVo">
+        select favorite_id, user_id, spu_id, create_time from mall_favorite
+    </sql>
+
+    <select id="selectMallFavoriteList" parameterType="MallFavorite" resultMap="MallFavoriteResult">
+        <include refid="selectMallFavoriteVo"/>
+        <where>  
+            <if test="favoriteId != null "> and favorite_id = #{favoriteId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="spuId != null "> and spu_id = #{spuId}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallFavoriteById" parameterType="Long" resultMap="MallFavoriteResult">
+        <include refid="selectMallFavoriteVo"/>
+        where favorite_id = #{favoriteId}
+    </select>
+        
+    <insert id="insertMallFavorite" parameterType="MallFavorite" useGeneratedKeys="true" keyProperty="favoriteId">
+        insert into mall_favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="spuId != null">spu_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="spuId != null">#{spuId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallFavorite" parameterType="MallFavorite">
+        update mall_favorite
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="spuId != null">spu_id = #{spuId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where favorite_id = #{favoriteId}
+    </update>
+
+    <delete id="deleteMallFavoriteById" parameterType="Long">
+        delete from mall_favorite where favorite_id = #{favoriteId}
+    </delete>
+
+    <delete id="deleteMallFavoriteByIds" parameterType="String">
+        delete from mall_favorite where favorite_id in 
+        <foreach item="favoriteId" collection="array" open="(" separator="," close=")">
+            #{favoriteId}
+        </foreach>
+    </delete>
+
+    <select id="customMallFavoriteSql" parameterType="MallFavorite" resultType="java.util.Map">
+        select * from mall_favorite
+        where favorite_id = #{favoriteId}
+    </select>
+
+</mapper>

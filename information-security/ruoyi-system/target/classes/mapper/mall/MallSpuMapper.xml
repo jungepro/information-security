@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mall.mapper.MallSpuMapper">
+    
+    <resultMap type="MallSpu" id="MallSpuResult">
+        <result property="spuId"    column="spu_id"    />
+        <result property="price"    column="price"    />
+        <result property="title"    column="title"    />
+        <result property="sales"    column="sales"    />
+        <result property="stock"    column="stock"    />
+        <result property="img"    column="img"    />
+        <result property="detail"    column="detail"    />
+        <result property="description"    column="description"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="freightTemplateId"    column="freight_template_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="status"    column="status"    />
+        <result property="activityType"    column="activity_type"    />
+        <result property="activityId"    column="activity_id"    />
+    </resultMap>
+
+    <sql id="selectMallSpuVo">
+        select spu_id, price, title, sales, stock, img, detail, description, category_id, freight_template_id, unit, status, activity_type, activity_id from mall_spu
+    </sql>
+
+    <select id="selectMallSpuList" parameterType="MallSpu" resultMap="MallSpuResult">
+        <include refid="selectMallSpuVo"/>
+        <where>  
+            <if test="spuId != null "> and spu_id = #{spuId}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="sales != null "> and sales = #{sales}</if>
+            <if test="stock != null "> and stock = #{stock}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="freightTemplateId != null "> and freight_template_id = #{freightTemplateId}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="activityType != null "> and activity_type = #{activityType}</if>
+            <if test="activityId != null "> and activity_id = #{activityId}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallSpuById" parameterType="Long" resultMap="MallSpuResult">
+        <include refid="selectMallSpuVo"/>
+        where spu_id = #{spuId}
+    </select>
+        
+    <insert id="insertMallSpu" parameterType="MallSpu" useGeneratedKeys="true" keyProperty="spuId">
+        insert into mall_spu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="price != null">price,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="sales != null">sales,</if>
+            <if test="stock != null">stock,</if>
+            <if test="img != null">img,</if>
+            <if test="detail != null">detail,</if>
+            <if test="description != null">description,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="freightTemplateId != null">freight_template_id,</if>
+            <if test="unit != null">unit,</if>
+            <if test="status != null">status,</if>
+            <if test="activityType != null">activity_type,</if>
+            <if test="activityId != null">activity_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="price != null">#{price},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="sales != null">#{sales},</if>
+            <if test="stock != null">#{stock},</if>
+            <if test="img != null">#{img},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="description != null">#{description},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="freightTemplateId != null">#{freightTemplateId},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="status != null">#{status},</if>
+            <if test="activityType != null">#{activityType},</if>
+            <if test="activityId != null">#{activityId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallSpu" parameterType="MallSpu">
+        update mall_spu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="price != null">price = #{price},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="sales != null">sales = #{sales},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="freightTemplateId != null">freight_template_id = #{freightTemplateId},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="activityType != null">activity_type = #{activityType},</if>
+            <if test="activityId != null">activity_id = #{activityId},</if>
+        </trim>
+        where spu_id = #{spuId}
+    </update>
+
+    <delete id="deleteMallSpuById" parameterType="Long">
+        delete from mall_spu where spu_id = #{spuId}
+    </delete>
+
+    <delete id="deleteMallSpuByIds" parameterType="String">
+        delete from mall_spu where spu_id in 
+        <foreach item="spuId" collection="array" open="(" separator="," close=")">
+            #{spuId}
+        </foreach>
+    </delete>
+
+    <select id="customMallSpuSql" parameterType="MallSpu" resultType="java.util.Map">
+        select * from mall_spu
+        where spu_id = #{spuId}
+    </select>
+
+</mapper>

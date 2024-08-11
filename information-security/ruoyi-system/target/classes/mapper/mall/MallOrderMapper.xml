@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mall.mapper.MallOrderMapper">
+    
+    <resultMap type="MallOrder" id="MallOrderResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="channel"    column="channel"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="userId"    column="user_id"    />
+        <result property="status"    column="status"    />
+        <result property="skuTotalPrice"    column="sku_total_price"    />
+        <result property="freightPrice"    column="freight_price"    />
+        <result property="couponPrice"    column="coupon_price"    />
+        <result property="couponId"    column="coupon_id"    />
+        <result property="groupShopId"    column="group_shop_id"    />
+        <result property="actualPrice"    column="actual_price"    />
+        <result property="payPrice"    column="pay_price"    />
+        <result property="payId"    column="pay_id"    />
+        <result property="payChannel"    column="pay_channel"    />
+        <result property="gmtPay"    column="gmt_pay"    />
+        <result property="shipNo"    column="ship_no"    />
+        <result property="shipCode"    column="ship_code"    />
+        <result property="gmtShip"    column="gmt_ship"    />
+        <result property="gmtConfirm"    column="gmt_confirm"    />
+        <result property="address"    column="address"    />
+        <result property="phone"    column="phone"    />
+        <result property="consignee"    column="consignee"    />
+        <result property="mono"    column="mono"    />
+        <result property="adminMonoLevel"    column="admin_mono_level"    />
+        <result property="adminMono"    column="admin_mono"    />
+        <result property="refundReason"    column="refund_reason"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMallOrderVo">
+        select mall_order.order_id, channel, order_no, user_id, mall_order.status, sku_total_price, freight_price, coupon_price, coupon_id, group_shop_id, actual_price, pay_price, pay_id, pay_channel, gmt_pay, ship_no, ship_code, gmt_ship, gmt_confirm, address, phone, consignee, mono, admin_mono_level, admin_mono, refund_reason, update_time, mall_order.create_time
+        from mall_order
+    </sql>
+
+    <select id="selectMallOrderList" parameterType="MallOrder" resultMap="MallOrderResult">
+        <include refid="selectMallOrderVo"/>
+        <where>  
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="channel != null  and channel != ''"> and channel = #{channel}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="skuTotalPrice != null "> and sku_total_price = #{skuTotalPrice}</if>
+            <if test="freightPrice != null "> and freight_price = #{freightPrice}</if>
+            <if test="couponPrice != null "> and coupon_price = #{couponPrice}</if>
+            <if test="couponId != null "> and coupon_id = #{couponId}</if>
+            <if test="groupShopId != null "> and group_shop_id = #{groupShopId}</if>
+            <if test="actualPrice != null "> and actual_price = #{actualPrice}</if>
+            <if test="payPrice != null "> and pay_price = #{payPrice}</if>
+            <if test="payId != null  and payId != ''"> and pay_id = #{payId}</if>
+            <if test="payChannel != null  and payChannel != ''"> and pay_channel = #{payChannel}</if>
+            <if test="gmtPay != null "> and gmt_pay = #{gmtPay}</if>
+            <if test="shipNo != null  and shipNo != ''"> and ship_no = #{shipNo}</if>
+            <if test="shipCode != null  and shipCode != ''"> and ship_code = #{shipCode}</if>
+            <if test="gmtShip != null "> and gmt_ship = #{gmtShip}</if>
+            <if test="gmtConfirm != null "> and gmt_confirm = #{gmtConfirm}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="mono != null  and mono != ''"> and mono = #{mono}</if>
+            <if test="adminMonoLevel != null "> and admin_mono_level = #{adminMonoLevel}</if>
+            <if test="adminMono != null  and adminMono != ''"> and admin_mono = #{adminMono}</if>
+            <if test="refundReason != null  and refundReason != ''"> and refund_reason = #{refundReason}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <select id="selectMallOrderById" parameterType="Long" resultMap="MallOrderResult">
+        <include refid="selectMallOrderVo"/>
+        where order_id = #{orderId}
+    </select>
+        
+    <insert id="insertMallOrder" parameterType="MallOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into mall_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="channel != null">channel,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="status != null">status,</if>
+            <if test="skuTotalPrice != null">sku_total_price,</if>
+            <if test="freightPrice != null">freight_price,</if>
+            <if test="couponPrice != null">coupon_price,</if>
+            <if test="couponId != null">coupon_id,</if>
+            <if test="groupShopId != null">group_shop_id,</if>
+            <if test="actualPrice != null">actual_price,</if>
+            <if test="payPrice != null">pay_price,</if>
+            <if test="payId != null">pay_id,</if>
+            <if test="payChannel != null">pay_channel,</if>
+            <if test="gmtPay != null">gmt_pay,</if>
+            <if test="shipNo != null">ship_no,</if>
+            <if test="shipCode != null">ship_code,</if>
+            <if test="gmtShip != null">gmt_ship,</if>
+            <if test="gmtConfirm != null">gmt_confirm,</if>
+            <if test="address != null">address,</if>
+            <if test="phone != null">phone,</if>
+            <if test="consignee != null">consignee,</if>
+            <if test="mono != null">mono,</if>
+            <if test="adminMonoLevel != null">admin_mono_level,</if>
+            <if test="adminMono != null">admin_mono,</if>
+            <if test="refundReason != null">refund_reason,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="channel != null">#{channel},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="skuTotalPrice != null">#{skuTotalPrice},</if>
+            <if test="freightPrice != null">#{freightPrice},</if>
+            <if test="couponPrice != null">#{couponPrice},</if>
+            <if test="couponId != null">#{couponId},</if>
+            <if test="groupShopId != null">#{groupShopId},</if>
+            <if test="actualPrice != null">#{actualPrice},</if>
+            <if test="payPrice != null">#{payPrice},</if>
+            <if test="payId != null">#{payId},</if>
+            <if test="payChannel != null">#{payChannel},</if>
+            <if test="gmtPay != null">#{gmtPay},</if>
+            <if test="shipNo != null">#{shipNo},</if>
+            <if test="shipCode != null">#{shipCode},</if>
+            <if test="gmtShip != null">#{gmtShip},</if>
+            <if test="gmtConfirm != null">#{gmtConfirm},</if>
+            <if test="address != null">#{address},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="consignee != null">#{consignee},</if>
+            <if test="mono != null">#{mono},</if>
+            <if test="adminMonoLevel != null">#{adminMonoLevel},</if>
+            <if test="adminMono != null">#{adminMono},</if>
+            <if test="refundReason != null">#{refundReason},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallOrder" parameterType="MallOrder">
+        update mall_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="channel != null">channel = #{channel},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="skuTotalPrice != null">sku_total_price = #{skuTotalPrice},</if>
+            <if test="freightPrice != null">freight_price = #{freightPrice},</if>
+            <if test="couponPrice != null">coupon_price = #{couponPrice},</if>
+            <if test="couponId != null">coupon_id = #{couponId},</if>
+            <if test="groupShopId != null">group_shop_id = #{groupShopId},</if>
+            <if test="actualPrice != null">actual_price = #{actualPrice},</if>
+            <if test="payPrice != null">pay_price = #{payPrice},</if>
+            <if test="payId != null">pay_id = #{payId},</if>
+            <if test="payChannel != null">pay_channel = #{payChannel},</if>
+            <if test="gmtPay != null">gmt_pay = #{gmtPay},</if>
+            <if test="shipNo != null">ship_no = #{shipNo},</if>
+            <if test="shipCode != null">ship_code = #{shipCode},</if>
+            <if test="gmtShip != null">gmt_ship = #{gmtShip},</if>
+            <if test="gmtConfirm != null">gmt_confirm = #{gmtConfirm},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="consignee != null">consignee = #{consignee},</if>
+            <if test="mono != null">mono = #{mono},</if>
+            <if test="adminMonoLevel != null">admin_mono_level = #{adminMonoLevel},</if>
+            <if test="adminMono != null">admin_mono = #{adminMono},</if>
+            <if test="refundReason != null">refund_reason = #{refundReason},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="deleteMallOrderById" parameterType="Long">
+        delete from mall_order where order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteMallOrderByIds" parameterType="String">
+        delete from mall_order where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <select id="customMallOrderSql" parameterType="MallOrder" resultType="java.util.Map">
+        select * from mall_order
+        where order_id = #{orderId}
+    </select>
+
+</mapper>
